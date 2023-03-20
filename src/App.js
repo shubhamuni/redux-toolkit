@@ -1,17 +1,20 @@
 import { Fragment, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import Cart from "./component/Cart/Cart";
 import Layout from "./component/Layout/Layout";
 import Products from "./component/Shop/Products";
 import { uiActions } from "./store/ui-slice";
 import Notification from "./component/UI/Notification";
-let isInitial = true;
+
+let isInitial = false;
+
 function App() {
   const dispatch = useDispatch();
   const showCart = useSelector((state) => state.ui.cartIsVisible);
   const cart = useSelector((state) => state.cart);
   const notification = useSelector((state) => state.ui.notification);
+
   useEffect(() => {
     const sendCartData = async () => {
       dispatch(
@@ -22,7 +25,7 @@ function App() {
         })
       );
       const response = await fetch(
-        "https://react-api-8342e-default-rtdb.firebaseio.com/cart.json",
+        "https://react-api-8342e-default-rtdb.firebaseio.com//cart.json",
         {
           method: "PUT",
           body: JSON.stringify(cart),
@@ -42,8 +45,8 @@ function App() {
       );
     };
 
-    if (isInitial) {
-      isInitial = false;
+    if (!isInitial) {
+      isInitial = true;
       return;
     }
 
